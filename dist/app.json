@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/index",
+    "pages/article",
+    "pages/user",
+    "pages/select",
+    "pages/discern",
+    "pages/writeOne",
+    "pages/writeMore"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "机器学习",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#1AAD16",
+    "list": [
+      {
+        "pagePath": "pages/index",
+        "text": "文章",
+        "iconPath": "images/news.png",
+        "selectedIconPath": "images/news_s.png"
+      },
+      {
+        "pagePath": "pages/select",
+        "text": "识别中心",
+        "iconPath": "images/discern.png",
+        "selectedIconPath": "images/discern_s.png"
+      },
+      {
+        "pagePath": "pages/user",
+        "text": "个人中心",
+        "iconPath": "images/user.png",
+        "selectedIconPath": "images/user_s.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

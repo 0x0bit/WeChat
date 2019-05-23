@@ -1,0 +1,236 @@
+<style>
+@import "../assets/weui.wxss";
+.controller{
+  padding: 15rpx
+}
+.title {
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: rgb(44, 151, 194);
+}
+image {
+  height: 300rpx;
+  width: 100%;
+  background-color: rgba(219, 216, 216, 0.3);
+}
+
+.sub-btn {
+  margin: 20rpx 15rpx;
+}
+
+.uploader-image {
+  padding: 20rpx;
+  background: url('http://pp6qq1rkn.bkt.clouddn.com/add.png')center center no-repeat;
+  background-size: 120rpx 120rpx;
+  border: 1px solid #95ebe3;
+  box-shadow: 4rpx 4rpx 4rpx #95ebe3;
+}
+.result-box.weui-flex__item{
+  width: 100rpx;
+}
+.result-box {
+  margin: 20rpx 0;
+  border: 1px solid #91dcdf;
+  box-shadow: 5rpx 5rpx 5rpx  #91dcdf;
+
+}
+.item-box {
+  width: 100%;
+  height: 150rpx;
+  padding: 10rpx;
+  margin: 20rpx 0;
+}
+.write-box{
+  width: 120rpx;
+  height: 120rpx;
+  margin-left: 50rpx;
+  background: url('http://pp6qq1rkn.bkt.clouddn.com/writebg.jpg')center center no-repeat;
+  background-size: 120rpx 120rpx;
+  font-size: 70rpx;
+  text-align: center;
+  line-height: 120rpx
+}
+
+.write-rate {
+  font-size: 24rpx;
+  color: #444443;
+  line-height: 120rpx;
+}
+
+.footer {
+  padding: 60rpx 0;
+  line-height: 30rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+</style>
+
+<template>
+  <view class="controller">
+    <!-- 上传图片展示区 -->
+    <view class="weui-flex" >
+      <view class="weui-flex__item">
+        <view>
+          <view class="title" hidden='{{imageBool}}'><text class="title">点击添加上传图片</text></view>
+          <view class=" discern-image uploader-image" @tap="uploadPhoto()"><image src="{{url}}" mode='widthFix'/></view>
+        </view>
+        <view hidden='{{resultBool}}' style="padding: 30rpx 0">
+          <button type="primary" @tap="uploadImage()">图片上传识别</button>
+        </view>
+      </view>
+    </view>
+    <!-- 结果显示 -->
+    <view class="result-box" hidden='{{!resultBool}}'>
+      <view class="weui-flex item-box">
+          <view class="weui-flex__item">
+            <view class="write-box">{{result.word[0]}}</view>
+          </view>
+          <view class="weui-flex__item">
+            <view class="write-rate">识别率：{{result.score[0]}}</view>
+          </view>
+      </view>
+
+      <view class="weui-flex item-box">
+          <view class="weui-flex__item">
+            <view class="write-box">{{result.word[1]}}</view>
+          </view>
+          <view class="weui-flex__item">
+            <view class="write-rate">识别率：{{result.score[1]}}</view>
+          </view>
+      </view>
+
+      <view class="weui-flex item-box">
+          <view class="weui-flex__item">
+            <view class="write-box">{{result.word[2]}}</view>
+          </view>
+          <view class="weui-flex__item">
+            <view class="write-rate">识别率：{{result.score[2]}}</view>
+          </view>
+      </view>
+    </view>
+
+
+    <!-- 返回按钮 -->
+    <view style="padding: 20rpx">
+      <button 
+        class="weui-btn" 
+        hidden='{{!resultBool}}' 
+        type="default"  
+        @tap="finish"> Back </button>
+    </view>
+    <!-- 底部 -->
+    <view class="footer">
+      <view class="weui-footer">
+            <view class="weui-footer__links">
+                <navigator url="" class="weui-footer__link">底部</navigator>
+            </view>
+            <view class="weui-footer__text">Copyright © 2019-04-2019-08</view>
+        </view>
+    </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Write extends wepy.page {
+  config = {
+    navigationBarTitleText: '手写识别'
+  }
+
+  data = {
+    url: '',
+    imageBool: false,
+    resultBool: false,
+    imgdata: '',
+    result: ''
+  }
+
+  methods = {
+    finish() {
+      wx.navigateBack({
+        delta: 1
+      })
+    },
+
+    /**
+     * 选择图片
+     */
+    uploadPhoto() {
+      wx.chooseImage({
+        count: 1,
+        sourceType: ['album', 'camera'],
+        success: res => {
+          wx.showLoading({
+            title: '上传中🤔🤔🤔'
+          })
+          this.url = res.tempFilePaths[0]
+          this.imageBool = true
+          let data = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64')
+          this.imgdata = data
+          this.$apply()
+        },
+        fail() {
+          wx.showModal({
+            title: '图片上传失败☹️',
+            content: '您图片上传失败了☹️'
+          })
+        },
+        complete() {
+          wx.hideLoading()
+        }
+      })
+    },
+    /**
+     * 图片识别
+     */
+    uploadImage() {
+      this.getDisCernByImg()
+    }
+  }
+
+    /**
+   * 图片请求
+   */
+  getDisCernByImg() {
+    if (this.url === '') {
+      wx.showModal({
+        title: '好歹你也给我个图片啊😫',
+        content: '你不给我图片臣妾没办法识别啊☹️'
+      })
+      return
+    }
+
+    wx.showLoading({
+      title: '识别中😎😎😎'
+    })
+    let that = this
+    wx.request({
+      url: 'http://106.14.145.218:9100/write',
+      method: 'post',
+      data: {imgData: this.imgdata, type: 1},
+      success(res) {
+        if (res.data.content.code === 200) {
+          that.resultBool = true
+          that.result = res.data.content.data
+        } else {
+          wx.showModal({
+            title: '识别失败😭',
+            content: '图片格式不正确'
+          })
+        }
+        that.$apply()
+      },
+      fail() {
+        wx.showModal({
+          title: '识别失败☹️',
+          content: '抱歉，可能服务器出小差了🤔'
+        })
+      },
+      complete() {
+        wx.hideLoading()
+      }
+    })
+  }
+}
+</script>

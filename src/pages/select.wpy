@@ -1,0 +1,110 @@
+<style>
+  @import '../assets/weui.wxss';
+  .page__title {
+    margin: 30rpx auto;
+    font-size: 40rpx;
+    text-align: center;
+    font-weight: 400;
+    color: rgb(51, 94, 95);
+  }
+  .weui-flex__item {
+    padding: 35rpx 20rpx;
+  }
+
+  .weui-btn-img {
+    background: url('http://pp6qq1rkn.bkt.clouddn.com/image2.png') center center no-repeat;
+    background-size: 120rpx 120rpx;
+  }
+  .weui-btn-href {
+    background: url('http://pp6qq1rkn.bkt.clouddn.com/href.png') center center no-repeat;
+    background-size: 120rpx 120rpx;
+  }
+  .weui-btn {
+    background-color:rgba(6, 180, 93, 0.7);
+    color: rgb(255, 255, 255);
+    height: 400rpx;
+  }
+  .option-btn{
+    margin-top: 120rpx;
+  }
+  .weui-btn span{
+    font-size: 24rpx;
+    color: #f0eeee;
+  }
+  .title {
+    font-size: 28rpx;
+    margin: 20rpx auto 10rpx;
+    text-align: center
+  }
+
+</style>
+
+<template>
+  <view class="page">
+    <view class="page__hd">
+        <view class="page__title">选择识别方式</view>
+    </view>
+    <view class="title">
+      <h3>百度API识别</h3>
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-href" @tap="tap(1)">
+                <view class="option-btn">图片链接</view>
+                <span>使用图片链接</span>
+              </button>
+            </view>
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" @tap="tap(2)">
+                <view class="option-btn">图片识别</view>
+                <span style="line-height: 0rpx;">需使用图片</span>
+            </button>
+            </view>
+        </view>
+
+        <view class="title">
+          <h3>手写体识别</h3>
+        </view>
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" @tap="writeOne()">
+                <view class="option-btn">手写识别单字</view>
+                <span>需使用图片</span>
+              </button>
+            </view>
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" @tap="writeMore()">
+                <view class="option-btn">手写识别多字</view>
+                <span style="line-height: 0rpx;">需使用图片</span>
+            </button>
+            </view>
+        </view>
+    </view>
+</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Select extends wepy.page {
+    methods={
+      tap(id) {
+        wx.navigateTo({
+           // 打开一个新的同路由页面，但指定不同的数据初始值
+          url: '/pages/discern?id=' + id
+        })
+      },
+      writeOne() {
+        wx.navigateTo({
+          url: '/pages/writeOne'
+        })
+      },
+
+      writeMore() {
+        wx.navigateTo({
+          url: '/pages/writeMore'
+        })
+      }
+    }
+  }
+</script>

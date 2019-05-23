@@ -1,0 +1,8 @@
+/node_modules
+.DS_store
+.vscode
+/out
+.eslintignore
+.eslintrc.js
+.wepycache
+.wepyignore

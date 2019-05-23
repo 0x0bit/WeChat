@@ -1,0 +1,19 @@
+
+  @import '../assets/weui.wxss';
+  .page__title {
+    margin: 30rpx auto;
+    font-size: 40rpx;
+    text-align: center;
+    font-weight: 400;
+    color: rgb(51, 94, 95);
+  }
+  .weui-flex__item {
+    padding: 35rpx 20rpx;
+  }
+  .option-btn {
+    line-height: 500rpx;
+  }
+  .option-local-btn {
+    line-height: 300rpx;
+  }
+

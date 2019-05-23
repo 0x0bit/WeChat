@@ -1,0 +1,67 @@
+
+<!-- 链接识别 -->
+  <view class="page controller">
+    <!-- 链接识别 -->
+    <view  wx:if="{{id == 1}}">
+      <view class="weui-flex">
+        <view class="weui-flex__item">
+          <view class="title"><text class="title">待识别图片</text></view>
+          <view class=" discern-image"><image src="{{url}}" mode="widthFix"/></view>
+        </view>
+      </view>
+      <!-- 链接输入框 -->
+      <view class="weui-flex input-url">
+        <view class="weui-flex__item">
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                  <textarea bindinput="bindKeyInput" class="weui-textarea" placeholder="请输入图片链接,不超过500字符" style="height: 3.3em" maxlength="500" disabled="{{resultBool}}"/>
+                </view>
+            </view>
+        </view>
+        </view>
+      </view>
+      <!-- 识别按钮 -->
+      <view class="weui-flex sub-btn" hidden="{{resultBool}}">
+        <view class="weui-flex__item">
+          <button class="weui-btn" type="primary" bindtap="uploadimgUrl" data-wpyuploadimgurl-a="">识别</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 上传图片识别 -->
+    <view  wx:if="{{id == 2}}">
+      <view class="weui-flex">
+        <view class="weui-flex__item">
+          <view>
+            <view class="title" hidden="{{imageBool}}"><text class="title">点击添加上传图片</text></view>
+            <view class=" discern-image uploader-image" bindtap="uploadPhoto" data-wpyuploadphoto-a=""><image src="{{url}}" mode="widthFix"/></view>
+          </view>
+          <view hidden="{{resultBool}}" style="padding: 20rpx">
+            <button type="primary" bindtap="uploadImage" data-wpyuploadimage-a="">图片上传识别</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 识别结果 -->
+    <view class="weui-flex result-box" hidden="{{!resultBool}}">
+      <view class="weui-flex__item">
+        <view class="weui-panel result-panel">
+            <view class="weui-panel__hd">识别结果如下：</view>
+            <view class="weui-media-box__desc">{{result}}</view>
+        </view>
+      </view>
+    </view>
+    <view style="padding: 20rpx">
+      <button class="weui-btn" hidden="{{!resultBool}}" type="default" bindtap="finish"> Back </button>
+    </view>
+    <view class="footer">
+      <view class="weui-footer">
+            <view class="weui-footer__links">
+                <navigator url="" class="weui-footer__link">底部</navigator>
+            </view>
+            <view class="weui-footer__text">Copyright © 2019-04-2019-08</view>
+        </view>
+    </view>
+  </view>

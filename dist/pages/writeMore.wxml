@@ -1,0 +1,35 @@
+
+  <view class="controller">
+    <!-- 上传图片展示区 -->
+    <view class="weui-flex">
+      <view class="weui-flex__item">
+        <view>
+          <view class="title" hidden="{{imageBool}}"><text class="title">点击添加上传图片</text></view>
+          <view class=" discern-image uploader-image" bindtap="uploadPhoto" data-wpyuploadphoto-a=""><image src="{{url}}" mode="widthFix"/></view>
+        </view>
+        <view hidden="{{resultBool}}" style="padding: 30rpx 0">
+          <button type="primary" bindtap="uploadImage" data-wpyuploadimage-a="">图片上传识别</button>
+        </view>
+      </view>
+    </view>
+    <!-- 结果显示 -->
+    <view class="weui-flex result-box" hidden="{{!resultBool}}">
+      <view class="weui-flex__item">
+        <view class="weui-panel result-panel">
+            <view class="weui-panel__hd">识别结果如下：</view>
+            <view class="weui-media-box__desc more-result">{{result}}</view>
+        </view>
+      </view>
+    </view>
+    <view style="padding: 20rpx">
+      <button class="weui-btn" hidden="{{!resultBool}}" type="default" bindtap="finish"> Back </button>
+    </view>
+    <view class="footer">
+      <view class="weui-footer">
+            <view class="weui-footer__links">
+                <navigator url="" class="weui-footer__link">底部</navigator>
+            </view>
+            <view class="weui-footer__text">Copyright © 2019-04-2019-08</view>
+        </view>
+      </view>
+    </view>

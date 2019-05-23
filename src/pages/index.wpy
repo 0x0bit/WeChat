@@ -1,0 +1,160 @@
+<style lang="less">
+.container {
+  background-color: #eee;
+}
+.swiperarea {
+  width: 100%;
+}
+.swiper{
+  height:400rpx;
+}
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+.slide-image:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #fff;
+  padding: 50px 20px;
+  background-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7));
+}
+.swiper-item {
+  position: relative;
+}
+.title {
+  position: absolute;
+  bottom: 0;
+  color: #fff;
+  z-index: 2;
+  padding: 20px;
+}
+.line {
+  // width: 90%;
+  // height: 2rpx;
+  background: #aaa;
+  margin: 15rpx;
+}
+.cards-area {
+  width: 100%;
+  .date{
+    color: #666;
+    text-align: center;
+    margin-bottom: 10rpx;
+    opacity: .8;
+    &:before{
+      position: absolute;
+      content: "————";
+      left:450rpx;
+      right:0;
+    }
+    &:after{
+      position: absolute;
+      content: "————";
+      left:0;
+      right:450rpx;
+    }
+  }
+}
+
+</style>
+<template>
+  <view class="container">
+      <view class="swiperarea">
+        <swiper indicator-dots="true" indicator-color="#fff" class='swiper' autoplay>
+          <repeat for="{{swiperObjects}}">
+            <swiper-item class="swiper-item">
+              <text class="title">{{item.title}}</text>
+              <image src="{{item.thumbnail_urls}}" class="slide-image" mode='widthFix' @tap="tap({{item.id}})"/>
+            </swiper-item>
+          </repeat>
+        </swiper>
+      </view>
+      <view class="line"></view>
+      <view class="cards-area">
+        <repeat for="{{detail.objects}}" >
+          <view @tap="tap({{item.id}})">
+            <card :title="item.title" :content="item.summary" :thumbnail="item.thumbnail_urls"/>
+          </view>
+        </repeat>
+      </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Card from '../components/card'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '最新文章列表',
+    window: {
+      enablePullDownRefresh: true
+    }
+  }
+  components = {
+    card: Card
+  }
+  data = {
+    detail: {
+      objects: []
+    },
+    isLoadingMore: false,
+    currentPage: 1,
+    info: ''
+  }
+  computed={
+    swiperObjects() {
+      return this.data.detail.objects.slice(0, 5) // 轮播图只取5个，要不然太多了
+    }
+  }
+  methods={
+    tap(id) {
+      wx.navigateTo({
+        url: `/pages/article?id=${id}`  // 打开一个新的同路由页面，但指定不同的数据初始值
+      })
+    }
+  }
+  onLoad() {
+    wx.showLoading({
+      title: '加载中'
+    })
+    this.loadList()
+  }
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh()
+  }
+  onReachBottom() {
+    this.currentPage++
+    if (this.currentPage >= 10) { // 最多只能加载10页
+      this.isLoadingMore = false
+      this.info = 'No more news'
+      this.$apply()
+      return
+    }
+    this.isLoadingMore = true
+    this.loadList()
+  }
+  onShareAppMessage() {
+    return {
+      title: '文章列表',
+      path: '/pages/index'
+    }
+  }
+  loadList() {
+    wx.request({
+      url: `http://106.14.145.218:9100/article/list?pageSize=10&page=${this.currentPage}`,
+      success: (res) => {
+        if (res.data.success) {
+          console.log(res.data.content.list)
+          this.detail.objects = this.detail.objects.concat(res.data.content.list)
+        }
+        this.$apply()
+        wx.hideLoading()
+      }
+    })
+  }
+}
+</script>

@@ -1,0 +1,21 @@
+
+  <view class="page">
+    <view class="page__hd">
+        <view class="page__title">选择识别方式</view>
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn option-btn" bindtap="tap" data-wpytap-a="1">图片链接识别</button>
+            </view>
+            <view class="weui-flex__item">
+              <button class="weui-btn option-btn" bindtap="tap" data-wpytap-a="2">上传图片识别</button>
+            </view>
+        </view>
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn option-local-btn" bindtap="tap" data-wpytap-a="3">调用本地识别程序</button>
+            </view>
+        </view>
+    </view>
+</view>

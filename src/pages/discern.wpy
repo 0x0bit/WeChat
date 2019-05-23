@@ -1,0 +1,335 @@
+<style>
+@import "../assets/weui.wxss";
+.controller{
+  padding: 15rpx
+}
+.discern-image {
+  padding: 0 20rpx;
+  background: url('http://pp6qq1rkn.bkt.clouddn.com/image1.png') center center no-repeat;
+  background-size: 90rpx 90rpx;
+  border: 1px solid #91dcdf;
+  box-shadow: 5rpx 5rpx 5rpx #91dcdf;
+}
+.title {
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: rgb(44, 151, 194);
+}
+image {
+  height: 300rpx;
+  width: 100%;
+  background-color: rgba(219, 216, 216, 0.3);
+}
+
+.input-url {
+  margin: 10rpx;
+}
+
+.weui-cell__bd {
+  color: #757474;
+  font-size: 24rpx;
+}
+
+.sub-btn {
+  margin: 20rpx 15rpx;
+}
+
+.uploader-image {
+  padding: 20rpx;
+  background: url('http://pp6qq1rkn.bkt.clouddn.com/add.png')center center no-repeat;
+  background-size: 120rpx 120rpx;
+  border: 1px solid #95ebe3;
+  box-shadow: 4rpx 4rpx 4rpx #95ebe3;
+}
+
+.result-box {
+  margin-top: 20rpx;
+  padding: 10rpx;
+}
+
+.result-panel {
+  border: 1px solid #91dcdf;
+  box-shadow: 5rpx 5rpx 5rpx #91dcdf;
+}
+.weui-media-box__desc {
+  padding: 20rpx;
+  line-height: 35rpx;
+  font-size: 24rpx;
+  color: black;
+}
+
+.footer {
+  padding: 60rpx 0;
+  line-height: 30rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+</style>
+
+<template>
+<!-- 链接识别 -->
+  <view class="page controller">
+    <!-- 链接识别 -->
+    <view  wx:if="{{id == 1}}">
+      <view class="weui-flex">
+        <view class="weui-flex__item">
+          <view class="title"><text class="title">待识别图片</text></view>
+          <view class=" discern-image"><image src="{{url}}" mode='widthFix'/></view>
+        </view>
+      </view>
+      <!-- 链接输入框 -->
+      <view class="weui-flex input-url">
+        <view class="weui-flex__item">
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                  <textarea 
+                    bindinput="bindKeyInput" 
+                    class="weui-textarea"
+                    placeholder="请输入图片链接,不超过500字符"
+                    style="height: 3.3em" 
+                    maxlength="500"
+                    disabled='{{resultBool}}'/>
+                </view>
+            </view>
+        </view>
+        </view>
+      </view>
+      <!-- 识别按钮 -->
+      <view class="weui-flex sub-btn" hidden="{{resultBool}}">
+        <view class="weui-flex__item">
+          <button 
+            class="weui-btn" 
+            type="primary" 
+            @tap="uploadimgUrl()">识别</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 上传图片识别 -->
+    <view wx:if="{{id == 2}}">
+      <view class="weui-flex" >
+        <view class="weui-flex__item">
+          <view>
+            <view class="title" hidden='{{imageBool}}'><text class="title">点击添加上传图片</text></view>
+            <view class=" discern-image uploader-image" @tap="uploadPhoto()"><image src="{{url}}" mode='widthFix'/></view>
+          </view>
+          <view hidden='{{resultBool}}' style="padding: 20rpx">
+            <button type="primary" @tap="uploadImage()">图片上传识别</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 识别结果 -->
+    <view class="weui-flex result-box" hidden='{{!resultBool}}'>
+      <view class="weui-flex__item">
+        <view class="weui-panel result-panel">
+            <view class="weui-panel__hd">识别结果如下：</view>
+            <view class="weui-media-box__desc">{{result}}</view>
+        </view>
+      </view>
+    </view>
+    <view style="padding: 20rpx">
+      <button 
+      class="weui-btn" 
+      hidden='{{!resultBool}}' 
+      type="default"  
+      @tap="finish"> Back </button>
+    </view>
+    <view class="footer">
+      <view class="weui-footer">
+            <view class="weui-footer__links">
+                <navigator url="" class="weui-footer__link">底部</navigator>
+            </view>
+            <view class="weui-footer__text">Copyright © 2019-04-2019-08</view>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Discern extends wepy.page {
+  config = {
+    navigationBarTitleText: '识别中心',
+    window: {
+      enablePullDownRefresh: false
+    }
+  }
+
+  data = {
+    id: 1,
+    url: '',
+    imageBool: false,
+    resultBool: false,
+    imgdata: '',
+    result: ''
+  }
+
+  onLoad(options = {}) {
+    this.id = options.id
+    this.$apply()
+  }
+
+  methods = {
+    finish() {
+      wx.navigateBack({
+        delta: 1
+      })
+    },
+
+    /**
+     * 图片链接识别
+     */
+    uploadimgUrl () {
+      this.getDisCernByUrl()
+    },
+
+    /**
+     * 选择图片
+     */
+    uploadPhoto() {
+      wx.chooseImage({
+        count: 1,
+        sourceType: ['album', 'camera'],
+        success: (res) => {
+          wx.showLoading({
+            title: '上传中🤔🤔🤔'
+          })
+          this.url = res.tempFilePaths[0]
+          this.imageBool = true
+          let data = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64')
+          // data = data.replace(/\r\n/g,'');
+          // data = data.replace(/\+/g, '%2B');
+          this.imgdata = data
+          this.$apply()
+        },
+        fail() {
+          wx.showModal({
+            title: '图片上传失败☹️',
+            content: '您图片上传失败了☹️'
+          })
+        },
+        complete() {
+          wx.hideLoading()
+        }
+      })
+    },
+    /**
+     * 图片识别
+     */
+    uploadImage () {
+      this.getDisCernByImg()
+    }
+  }
+
+  /**
+   * 获取输入框输入
+  */
+  bindKeyInput(e) {
+    this.url = e.detail.value
+  }
+
+  // -------------------------------------------------------
+  /**
+   * 通过图片url识别
+   */
+  getDisCernByUrl () {
+    const regex = /(.*)\\.(jpg|jpeg|png)$/
+    if (this.url === '') {
+      wx.showModal({
+        title: '好歹你也给我个地址啊😫',
+        content: '你不给我地址臣妾没办法识别啊☹️'
+      })
+      return
+    }
+
+    if (regex.test(this.url)) {
+      wx.showModal({
+        title: '给个正确的图片地址啊😫',
+        content: '你给我正确的图片地址臣妾没办法识别啊☹️'
+      })
+      return
+    }
+
+    wx.showLoading({
+      title: '识别中🤔🤔🤔'
+    })
+
+    let that = this
+    wx.request({
+      url: 'http://106.14.145.218:9100/baidu/api/discern',
+      method: 'post',
+      data: {imgOrUrl: this.url},
+      success(res) {
+        if (res.data.content.code === 200) {
+          that.resultBool = true
+          that.result = res.data.content.word.join(' ')
+          that.$apply()
+        } else {
+          wx.showModal({
+            title: '识别失败☹️',
+            content: '没有找到你给我链接的图片☹️'
+          })
+        }
+      },
+      fail() {
+        wx.showModal({
+          title: '识别失败☹️',
+          content: '抱歉，可能服务器出小差了☹️'
+        })
+      },
+      complete() {
+        wx.hideLoading()
+      }
+    })
+  }
+
+  /**
+   * 图片请求
+   */
+  getDisCernByImg() {
+    if (this.url === '') {
+      wx.showModal({
+        title: '好歹你也给我个图片啊😫',
+        content: '你不给我图片臣妾没办法识别啊☹️'
+      })
+      return
+    }
+
+    wx.showLoading({
+      title: '识别中😎😎😎'
+    })
+    let that = this
+
+    wx.request({
+      url: 'http://106.14.145.218:9100/baidu/api/discern',
+      method: 'post',
+      data: {imgOrUrl: this.imgdata},
+      success(res) {
+        if (res.data.content.code === 200) {
+          that.resultBool = true
+          that.result = res.data.content.word.join(' ')
+        } else {
+          wx.showModal({
+            title: '识别失败😭',
+            content: '图片格式不正确'
+          })
+        }
+        that.$apply()
+      },
+      fail() {
+        wx.showModal({
+          title: '识别失败☹️',
+          content: '抱歉，可能服务器出小差了🤔'
+        })
+      },
+      complete() {
+        wx.hideLoading()
+      }
+    })
+  }
+}
+</script>

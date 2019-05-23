@@ -1,0 +1,93 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+li{
+  list-style: none;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/article',
+      'pages/user',
+      'pages/select',
+      'pages/discern',
+      'pages/writeOne',
+      'pages/writeMore'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '机器学习',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      selectedColor: '#1AAD16',
+      list: [
+        {
+          pagePath: 'pages/index',
+          text: '文章',
+          iconPath: 'images/news.png',
+          selectedIconPath: 'images/news_s.png'
+        },
+        {
+          pagePath: 'pages/select',
+          text: '识别中心',
+          iconPath: 'images/discern.png',
+          selectedIconPath: 'images/discern_s.png'
+        },
+        {
+          pagePath: 'pages/user',
+          text: '个人中心',
+          iconPath: 'images/user.png',
+          selectedIconPath: 'images/user_s.png'
+        }
+      ]
+    }
+  }
+
+  onLaunch () {
+    var that = this
+    // 登录
+    wx.login({
+      success: res => {
+        if (res.code) {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          wx.request({
+            url: 'http://106.14.145.218:9100/wx_login',
+            data: {
+              code: res.code
+            },
+            header: {
+              'Content-Type': 'application/json'
+            },
+            success: function (res) {
+              console.log(res.data.content)
+              that.globalData.openId = res.data.content.openId
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
+  }
+
+  globalData = {
+    userInfo: null,
+    openId: ''
+  }
+}
+</script>

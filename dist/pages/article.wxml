@@ -1,0 +1,28 @@
+
+  <view class="container" id="{{detail.id}}">
+    <view class="title">{{detail.title}}</view>
+    <view class="article-info">
+      <view class="article-author">
+        <view><image src="{{detail.image}}"/></view>
+        <view class="author">作者：<span>{{detail.author}}</span></view>
+      </view>
+      <view>创建时间：<span>{{detail.ctime}}</span></view>
+      <view>原文链接：<span>{{detail.href}}</span></view>
+    </view>
+    <image src="{{detail.thumbnail_urls}}" class="article-image" mode="widthFix"/>
+    <view class="content">
+      <rich-text class="article-content" nodes="{{detail.content}}"/>
+    </view>
+
+    <!-- 加wx:if是为了让加载完后才显示button，不然文章还没加载完整个页面就一个孤零零的button太丑了 -->
+    <button class="weui-btn" type="default"  wx:if="{{!!detail.title}}" bindtap="finish"> Back </button>
+
+    <view class="footer">
+      <view class="weui-footer">
+            <view class="weui-footer__links">
+                <navigator url="" class="weui-footer__link">底部</navigator>
+            </view>
+            <view class="weui-footer__text">Copyright © 2019-04-2019-08</view>
+        </view>
+    </view>
+  </view>

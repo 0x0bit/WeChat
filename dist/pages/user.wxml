@@ -1,0 +1,47 @@
+
+    <view>
+    <!-- 如果只是展示用户头像昵称，可以使用 <open-data /> 组件 -->
+    <view class="userinfo">
+        <view class="userinfo-avatar">
+            <open-data type="userAvatarUrl"/>
+        </view>
+        <open-data type="userNickName"/>
+    </view>
+    <view class="weui-cells__title">个人设置</view>
+    <view class="weui-cells">
+      <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <text>消息中心</text>
+            </view>
+            <view class="weui-cell__ft">1</view>
+        </view>
+        
+
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <text>我赞过的</text>
+            </view>
+            <view class="weui-cell__ft">40篇</view>
+        </view>
+
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <text>我的钱包</text>
+            </view>
+            <view class="weui-cell__ft">0</view>
+        </view>
+
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <text>意见反馈</text>
+            </view>
+        </view>
+
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <text>设置</text>
+            </view>
+        </view>
+        
+    </view>
+</view>

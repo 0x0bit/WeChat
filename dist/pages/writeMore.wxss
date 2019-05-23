@@ -1,0 +1,55 @@
+
+@import "../assets/weui.wxss";
+.controller {
+  padding: 15rpx;
+}
+.title {
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: rgb(44, 151, 194);
+}
+image {
+  height: 300rpx;
+  width: 100%;
+  background-color: rgba(219, 216, 216, 0.3);
+}
+
+.sub-btn {
+  margin: 20rpx 15rpx;
+}
+
+.uploader-image {
+  padding: 20rpx;
+  background: url("http://pp6qq1rkn.bkt.clouddn.com/add.png") center center
+    no-repeat;
+  background-size: 120rpx 120rpx;
+  border: 1px solid #95ebe3;
+  box-shadow: 4rpx 4rpx 4rpx #95ebe3;
+}
+.result-box.weui-flex__item {
+  width: 100rpx;
+}
+.result-box {
+  margin: 20rpx 0;
+  border: 1px solid #91dcdf;
+  box-shadow: 5rpx 5rpx 5rpx #91dcdf;
+}
+.item-box {
+  width: 100%;
+  height: 150rpx;
+  padding: 10rpx;
+  margin: 20rpx 0;
+}
+
+.more-result{
+  padding: 10rpx;
+  color: #252525;
+}
+
+.footer {
+  padding: 60rpx 0;
+  line-height: 30rpx;
+  text-align: center;
+  font-size: 24rpx;
+}

@@ -1,0 +1,39 @@
+
+  @import '../assets/weui.wxss';
+  .page__title {
+    margin: 30rpx auto;
+    font-size: 40rpx;
+    text-align: center;
+    font-weight: 400;
+    color: rgb(51, 94, 95);
+  }
+  .weui-flex__item {
+    padding: 35rpx 20rpx;
+  }
+
+  .weui-btn-img {
+    background: url('http://pp6qq1rkn.bkt.clouddn.com/image2.png') center center no-repeat;
+    background-size: 120rpx 120rpx;
+  }
+  .weui-btn-href {
+    background: url('http://pp6qq1rkn.bkt.clouddn.com/href.png') center center no-repeat;
+    background-size: 120rpx 120rpx;
+  }
+  .weui-btn {
+    background-color:rgba(6, 180, 93, 0.7);
+    color: rgb(255, 255, 255);
+    height: 400rpx;
+  }
+  .option-btn{
+    margin-top: 120rpx;
+  }
+  .weui-btn span{
+    font-size: 24rpx;
+    color: #f0eeee;
+  }
+  .title {
+    font-size: 28rpx;
+    margin: 20rpx auto 10rpx;
+    text-align: center
+  }
+

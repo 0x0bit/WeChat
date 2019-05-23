@@ -1,0 +1,43 @@
+
+  <view class="page">
+    <view class="page__hd">
+        <view class="page__title">选择识别方式</view>
+    </view>
+    <view class="title">
+      <h3>百度API识别</h3>
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-href" bindtap="tap" data-wpytap-a="1">
+                <view class="option-btn">图片链接</view>
+                <span>使用图片链接</span>
+              </button>
+            </view>
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" bindtap="tap" data-wpytap-a="2">
+                <view class="option-btn">图片识别</view>
+                <span style="line-height: 0rpx;">需使用图片</span>
+            </button>
+            </view>
+        </view>
+
+        <view class="title">
+          <h3>手写体识别</h3>
+        </view>
+        <view class="weui-flex">
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" bindtap="writeOne" data-wpywriteone-a="">
+                <view class="option-btn">手写识别单字</view>
+                <span>需使用图片</span>
+              </button>
+            </view>
+            <view class="weui-flex__item">
+              <button class="weui-btn weui-btn-img" bindtap="writeMore" data-wpywritemore-a="">
+                <view class="option-btn">手写识别多字</view>
+                <span style="line-height: 0rpx;">需使用图片</span>
+            </button>
+            </view>
+        </view>
+    </view>
+</view>
